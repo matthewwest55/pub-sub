@@ -1,0 +1,51 @@
+[tool.poetry]
+name = "pub_sub"
+version = "0.1.0"
+description = "Pub sub service"
+authors = ["CTDS UChicago <cdis@uchicago.edu>"]
+license = "Apache-2.0"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "*"
+uvicorn = {extras = ["standard"], version="^0.18.2"}
+gunicorn = ">=22.0.0"
+gino = {version = "^1.0.0", extras = ["starlette"]}
+# restricting sqlalchemy for gino https://github.com/python-gino/gino/discussions/765'
+sqlalchemy = "^1.3.0, <1.4"
+alembic = "^1.3"
+psycopg2-binary = "^2.8"
+gen3authz = "^2.0"
+indexclient = "^2.1.0"
+httpx = "^0.23.0"
+authutils = "^6.0.0"
+cdislogging = "^1.0"
+click = "*"
+pyyaml = "^6.0"
+setuptools = "*"
+dataclasses-json = "==0.5.*,>=0.5.2"
+pytest-asyncio = "^0.15.1"
+jsonpath-ng = "==1.5.3"
+elasticsearch = "==7.10.*"
+bleach = ">=3.3.1"
+tenacity = ">=8.0.0"
+pydash = "^5.1.0"
+pathvalidate = "^3.2.0"
+python-multipart = "<1"
+redis = "*"
+numpy = "<2.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.3"
+pytest-cov = "^2.8"
+pyyaml = "*"
+requests = "^2.32"
+respx = "*"
+nest-asyncio = "^1.5.1"
+
+[tool.poetry.plugins."pub-sub.modules"]
+"pub_sub_client" = "mds.pub_sub_client"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
