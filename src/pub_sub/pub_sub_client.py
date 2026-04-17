@@ -10,8 +10,8 @@ class PubSubClient():
 
     def __init__(self):
         # Hate that I'm making this something that is hard-coded, but have to do it
-        self.client = get_redis_client('34.56.106.95', 6379, 0)
-        # self.client = get_redis_client('REDIS-REPLACE-ME', 6379, 0)
+        # self.client = get_redis_client('34.170.74.225', 6379, 0)
+        self.client = get_redis_client('REDIS-REPLACE-ME', 6379, 0)
 
     def publish(self, channel: str, message: str):
         pattern = re.compile("[0-9]*-[0-9]*")
