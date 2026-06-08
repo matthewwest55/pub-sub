@@ -34,6 +34,7 @@ pathvalidate = "^3.2.0"
 python-multipart = "<1"
 redis = "*"
 numpy = "<2.0"
+psycopg = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.3"
