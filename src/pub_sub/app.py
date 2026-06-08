@@ -94,7 +94,7 @@ def subscribe(ip_address:str, hostname:str, channel_name:str, service_endpoint:s
         return "Subscribed"    
     return "Not Subscribed"
 
-@app.get("/subscription_status/{channel_name}")
+@app.get("/subscription_status/{hostname}")
 def subscription_status(hostname: str):
     print(len(agg_mds_subscription_pool))
     print(agg_mds_subscription_pool)
