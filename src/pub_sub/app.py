@@ -3,6 +3,7 @@ from pub_sub_client import *
 import threading
 import asyncio
 import time
+import requests
 
 app = FastAPI()
 
@@ -53,7 +54,23 @@ class SubscriptionListeningThread(threading.Thread):
             print("Last: " + str(last_index))
 
             # This is where we send the data to the provided service_endpoint
+            # mds endpoint inside kubernetes is http://metadata-service
+            # LEFT-OFF: I can get data here, I need to send that data to the mds service using the kubernetes endpoint mds-service or something
+            # From there, I can put a check in the MDS service and have an API for handling data
+            # From there, I can put the data into the agg mds service and we'll see where I'm at
+            try:
+                headers = {
+                    "Content-Type": "text/plain; charset=utf-8"
+                }
+                response = requests.post(self.service_endpoint, data=message, headers=headers)
+                print(f"Status Code: {response.status_code}")
+                print(f"Response: {response.json()}")
+            except requests.exceptions.RequestException as e:
+                print(f"Failed to connect to pod: {e}")
 
+            # LEFT-OFF: Current problem - use postman to verify that I can send data to the MDS endpoint as expected and that it puts up data as expected
+            # once that is complete, then I can make sure that I'm sending data as expected from here
+            
             # time_index = message[0][0].decode('utf-8')
             # print(f"Got {time_index} entry")
             # read_data = message[0][1]
@@ -82,6 +99,7 @@ def subscribe(ip_address:str, hostname:str, channel_name:str, service_endpoint:s
     if hostname not in agg_mds_subscription_pool:
     # Will this lead to memory leaks if I don't close threads properly?
     # new_thread = threading.Thread(target=asyncio.run, args=(subscribe_to_commons(ip_address, hostname, channel_name),))
+    # How many threads can I keep going at once? I can potentially just remake them as needed. Might want to test
         new_thread = SubscriptionListeningThread(ip_address=ip_address, hostname=hostname, channel_name=channel_name, service_endpoint=service_endpoint)
         if hostname in agg_mds_subscription_pool:
             dying_process = agg_mds_subscription_pool[hostname]
