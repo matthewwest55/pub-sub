@@ -39,7 +39,7 @@ class SubscriptionListeningThread(threading.Thread):
         print(f"Subscribed to {channel}. Waiting for messages...")
         last_index = 0
         while self.stay_alive:
-            # print("trying to get message now")
+            print("trying to get message now")
             # message = redis_client.xrange(channel, last_index, "+", 1)
             message = redis_client.xread(streams={channel: last_index}, count=1000)
             # print("got message")
