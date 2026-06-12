@@ -62,10 +62,9 @@ class SubscriptionListeningThread(threading.Thread):
             # From there, I can put the data into the agg mds service and we'll see where I'm at
             try:
                 headers = {
-                    "Content-Type": "text/plain; charset=utf-8"
+                    "Content-Type": "application/json; charset=utf-8"
                 }
-                message_bytes = message.encode("utf-8")
-                response = requests.post(self.service_endpoint, data=message_bytes, headers=headers)
+                response = requests.post(self.service_endpoint, data=message, headers=headers)
                 print(f"Status Code: {response.status_code}")
                 print(f"Response: {response.json()}")
             except requests.exceptions.RequestException as e:
