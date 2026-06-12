@@ -31,7 +31,7 @@ class SubscriptionListeningThread(threading.Thread):
         # Setup connection to Redis
         # Gonna hard-code one ip address for now, will fix with config later
         # pubsub_client = PubSubClient()
-        redis_client = redis.Redis(host=ip_address, port=6379, db=0, password="temporary_password")
+        redis_client = redis.Redis(host=ip_address, port=6379, db=0, password="temporary_password", decode_responses=True)
         channel = channel_name
 
         # 2. Make redis spin
@@ -48,7 +48,7 @@ class SubscriptionListeningThread(threading.Thread):
 
             print(f"message: {message}")
             print(type(message))
-            
+
             # Check if there are any new entries. If not, wait and check again
             if len(message) == 0:
                 time.sleep(1)
