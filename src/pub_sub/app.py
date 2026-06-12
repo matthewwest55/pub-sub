@@ -64,7 +64,9 @@ class SubscriptionListeningThread(threading.Thread):
                 headers = {
                     "Content-Type": "application/json; charset=utf-8"
                 }
-                response = requests.post(self.service_endpoint, data=message, headers=headers)
+                message_json = json.dumps(message)
+                message_bytes = message_json.encode("utf-8")
+                response = requests.post(self.service_endpoint, data=message_bytes, headers=headers)
                 print(f"Status Code: {response.status_code}")
                 print(f"Response: {response.json()}")
             except requests.exceptions.RequestException as e:
