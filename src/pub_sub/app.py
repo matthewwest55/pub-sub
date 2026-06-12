@@ -32,18 +32,17 @@ class SubscriptionListeningThread(threading.Thread):
         # Gonna hard-code one ip address for now, will fix with config later
         # pubsub_client = PubSubClient()
         redis_client = redis.Redis(host=ip_address, port=6379, db=0, password="temporary_password", decode_responses=True)
-        channel = channel_name
 
         # 2. Make redis spin
         # pubsub_client.subscribe(channel)
-        print(f"Subscribed to {channel}. Waiting for messages...")
+        print(f"Subscribed to {channel_name}. Waiting for messages...")
         last_index = 0
         while self.stay_alive:
             # This does print, so that is good news
             # print("trying to get message now")
             # message = redis_client.xrange(channel, last_index, "+", 1)
             # need to check if this is getting data like expected
-            message = redis_client.xread(streams={channel: last_index}, count=1000)
+            message = redis_client.xread(streams={channel_name: last_index}, count=1000)
             print("got message")
 
             print(f"message: {message}")
@@ -65,7 +64,8 @@ class SubscriptionListeningThread(threading.Thread):
                 headers = {
                     "Content-Type": "text/plain; charset=utf-8"
                 }
-                response = requests.post(self.service_endpoint, data=message, headers=headers)
+                message_bytes = message.encode("utf-8")
+                response = requests.post(self.service_endpoint, data=message_bytes, headers=headers)
                 print(f"Status Code: {response.status_code}")
                 print(f"Response: {response.json()}")
             except requests.exceptions.RequestException as e:
